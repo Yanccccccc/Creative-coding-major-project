@@ -18,6 +18,8 @@ let firework17;
 // Control the number of frames in the bloom cycle
 let cycleDuration = 2000;
 let whiteDots = [];
+let fireworks = [];
+
 
 function setup() {
   createCanvas(windowWidth, windowHeight);
@@ -43,6 +45,26 @@ function setup() {
   firework16 = new Firework(0.67 * width, 1.05 * height, 0.5, 1);
   firework17 = new Firework(0.95 * width, height, 0.5, 1);
 
+
+  fireworks.push(firework1);
+  fireworks.push(firework2);
+  fireworks.push(firework3);
+  fireworks.push(firework4);
+  fireworks.push(firework5);
+  fireworks.push(firework6);
+  fireworks.push(firework7);
+  fireworks.push(firework8);
+  fireworks.push(firework9);
+  fireworks.push(firework10);
+  fireworks.push(firework11);
+  fireworks.push(firework12);
+  fireworks.push(firework13);
+  fireworks.push(firework14);
+  fireworks.push(firework15);
+  fireworks.push(firework16);
+  fireworks.push(firework17);
+
+
   // Create randomly distributed white dots
   for (let i = 0; i < 50; i++) {
     let x = random(width);
@@ -50,7 +72,7 @@ function setup() {
     let size = random(5, 15);
     whiteDots.push(new WhiteDot(x, y, size));
   }
-}
+ }
 
 function draw() {
   let bgcol = color("#02496C");
@@ -61,42 +83,22 @@ function draw() {
   for (let dot of whiteDots) {
     dot.show();
   }
+  
+  for (let i=0; i<fireworks.length; i++) {
+    fireworks[i].show()
+    fireworks[i].update();
 
-  firework1.show();
-  firework1.update();
-  firework2.show();
-  firework2.update();
-  firework3.show();
-  firework3.update();
-  firework4.show();
-  firework4.update();
-  firework5.show();
-  firework5.update();
-  firework6.show();
-  firework6.update();
-  firework7.show();
-  firework7.update();
-  firework8.show();
-  firework8.update();
-  firework9.show();
-  firework9.update();
-  firework10.show();
-  firework10.update();
-  firework11.show();
-  firework11.update();
-  firework12.show();
-  firework12.update();
-  firework13.show();
-  firework13.update();
-  firework14.show();
-  firework14.update();
-  firework15.show();
-  firework15.update();
-  firework16.show();
-  firework16.update();
-  firework17.show();
-  firework17.update();
+  }
 
+}
+
+
+function keyPressed() {
+  for (let i = 0; i < whiteDots.length; i++) {
+    let x = random(width);
+    let y = random(height);
+    whiteDots[i].updatePosition(x, y)
+  }
 }
 
 function windowResized() {
@@ -220,5 +222,3 @@ class WhiteDot {
     this.y = newY;
   }
 }
-
-
