@@ -20,6 +20,18 @@ let cycleDuration = 2000;
 let whiteDots = [];
 let fireworks = [];
 
+let vel = []; //array to store velocity
+let grav = 0.3; // set the gravidate
+//position
+let y = [];
+let x = [];
+//color
+let r = [];
+let g = [];
+let b = [];
+let marcador = 0; 
+
+
 
 function setup() {
   createCanvas(windowWidth, windowHeight);
@@ -74,31 +86,72 @@ function setup() {
   }
  }
 
-function draw() {
+
+function draw() 
+{
   let bgcol = color("#02496C");
   bgcol.setAlpha(5);
   background(bgcol);
-
+  
   // Draw white dots
   for (let dot of whiteDots) {
     dot.show();
   }
-  
+
   for (let i=0; i<fireworks.length; i++) {
     fireworks[i].show()
     fireworks[i].update();
-
   }
-
+  
+  //draw falling and bouncing balls
+  if (marcador === 1) {
+    for (let i = 0; i < x.length; i++) {
+      noStroke();
+      fill(r[i], g[i], b[i]);
+      ellipse(x[i], y[i], 35, 35);
+      y[i] += vel[i] + 0.5 * grav; //simulate the effect of gravity
+      vel[i] += grav;
+    //if the circle reach the bottom of the canvas, use negative to change its direction
+      if (y[i] > height) {
+        vel[i] = -1 * vel[i]; 
+      }
+    }
+  }
+  
 }
 
-
+//press keyboard to create random white dots
 function keyPressed() {
   for (let i = 0; i < whiteDots.length; i++) {
     let x = random(width);
     let y = random(height);
-    whiteDots[i].updatePosition(x, y)
+    whiteDots[i].updatePosition(x, y);
   }
+}
+
+function mouseClicked(){
+
+  if(x.length === 0 && marcador === 0){
+
+    x[0] = mouseX;
+    y[0] = mouseY;
+    vel[0] = 1.5;
+    r[0] = random(255);
+    g[0] = random(255);
+    b[0] = random(255);
+    marcador = 1;
+  }
+
+  else{
+    x.push(mouseX);
+    y.push(mouseY);
+    vel.push(1.5);
+    r.push(random(255));
+    g.push(random(255));
+    b.push(random(255));
+  }
+
+
 }
 
 function windowResized() {
