@@ -1,3 +1,7 @@
+//Press 1 enter the fireworks mode and click to create more fireworks
+//Press 2 enter the boucing balls mode and click to make more balls
+//Press space to create more background white dots
+
 let firework1;
 let firework2;
 let firework3;
@@ -20,6 +24,8 @@ let cycleDuration = 2000;
 let whiteDots = [];
 let fireworks = [];
 
+let mode = 0; // set the value to track current mode
+
 let vel = []; //array to store velocity
 let grav = 0.3; // set the gravidate
 //position
@@ -30,7 +36,6 @@ let r = [];
 let g = [];
 let b = [];
 let marcador = 0; 
-
 
 
 function setup() {
@@ -102,7 +107,7 @@ function draw()
     fireworks[i].show()
     fireworks[i].update();
   }
-  
+
   //draw falling and bouncing balls
   if (marcador === 1) {
     for (let i = 0; i < x.length; i++) {
@@ -116,43 +121,57 @@ function draw()
         vel[i] = -1 * vel[i]; 
       }
     }
-  }
   
+  }
 }
 
 //press keyboard to create random white dots
 function keyPressed() {
-  for (let i = 0; i < whiteDots.length; i++) {
+if(key === '1'){
+  mode = 1;  // add more fireworks
+}
+
+if(key === '2'){
+ fireworks = []; 
+ mode = 2; // add bouncing and falling ball
+}
+
+if(key === ' '){
+
+ for (let i = 0; i < whiteDots.length; i++) {
     let x = random(width);
     let y = random(height);
     whiteDots[i].updatePosition(x, y);
   }
 }
+}
 
 function mouseClicked(){
 
-  if(x.length === 0 && marcador === 0){
+ if(mode === 1){
+  fireworks.push(new Firework(mouseX, mouseY, 0.5, 1)); //fireworks mode
+ }
 
+if(mode === 2){
+
+  if (x.length === 0 && marcador === 0) {
     x[0] = mouseX;
     y[0] = mouseY;
     vel[0] = 1.5;
-    r[0] = random(255);
-    g[0] = random(255);
-    b[0] = random(255);
+    r[0] = int(random(128) + 128);
+    g[0] = int(random(255));
+    b[0] = int(random(255));
     marcador = 1;
-  }
-
-  else{
+  } else {
     x.push(mouseX);
     y.push(mouseY);
     vel.push(1.5);
-    r.push(random(255));
-    g.push(random(255));
-    b.push(random(255));
+    r.push(int(random(128) + 128));
+    g.push(int(random(255)));
+    b.push(int(random(255)));
   }
-
-
-}
+  
+ }}
 
 function windowResized() {
   resizeCanvas(windowWidth, windowHeight);
@@ -247,7 +266,7 @@ class Firework {
   update() {
     if (millis() - this.cycleStartTime >= cycleDuration) {
       this.cycleStartTime = millis();
-    }
+    } 
   }
 
   updatePosition(newX, newY) {
