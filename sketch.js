@@ -1,6 +1,7 @@
-//Press 1 enter the fireworks mode and click to create more fireworks
-//Press 2 enter the boucing balls mode and click to make more balls
+//Press 1 enter adding balls mode, then click to add balls
+//Press 2 enter create fireworks mode, then click to make your own fireworks creations
 //Press space to create more background white dots
+//Press s and S to save your creation
 
 let firework1;
 let firework2;
@@ -133,7 +134,7 @@ if(key === '1'){
 
 if(key === '2'){
  fireworks = []; 
- mode = 2; // add bouncing and falling ball
+ mode = 2; // create fireworks by users‘ clicking
 }
 
 if(key === ' '){
@@ -144,15 +145,17 @@ if(key === ' '){
     whiteDots[i].updatePosition(x, y);
   }
 }
+//save screenshot
+if(key === 's' || 'S'){
+  saveCanvas('Your creation done!', png);
+}
+
+
 }
 
 function mouseClicked(){
 
  if(mode === 1){
-  fireworks.push(new Firework(mouseX, mouseY, 0.5, 1)); //fireworks mode
- }
-
-if(mode === 2){
 
   if (x.length === 0 && marcador === 0) {
     x[0] = mouseX;
@@ -171,6 +174,14 @@ if(mode === 2){
     b.push(int(random(255)));
   }
   
+  
+ }
+
+if(mode === 2){
+
+  fireworks.push(new Firework(mouseX, mouseY, 0.5, 1)); //fireworks mode
+
+ 
  }}
 
 function windowResized() {
