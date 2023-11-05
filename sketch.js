@@ -1,8 +1,3 @@
-//Press 1 enter adding balls mode, then click to add balls
-//Press 2 enter create fireworks mode, then click to make your own fireworks creations
-//Press space to create more background white dots
-//Press s and S to save your creation
-
 let firework1;
 let firework2;
 let firework3;
@@ -24,19 +19,6 @@ let firework17;
 let cycleDuration = 2000;
 let whiteDots = [];
 let fireworks = [];
-
-let mode = 0; // set the value to track current mode
-
-let vel = []; //array to store velocity
-let grav = 0.3; // set the gravidate
-//position
-let y = [];
-let x = [];
-//color
-let r = [];
-let g = [];
-let b = [];
-let marcador = 0; 
 
 
 function setup() {
@@ -109,34 +91,19 @@ function draw()
     fireworks[i].update();
   }
 
-  //draw falling and bouncing balls
-  if (marcador === 1) {
-    for (let i = 0; i < x.length; i++) {
-      noStroke();
-      fill(r[i], g[i], b[i]);
-      ellipse(x[i], y[i], 35, 35);
-      y[i] += vel[i] + 0.5 * grav; //simulate the effect of gravity
-      vel[i] += grav;
-    //if the circle reach the bottom of the canvas, use negative to change its direction
-      if (y[i] > height) {
-        vel[i] = -1 * vel[i]; 
-      }
-    }
-  
-  }
 }
-
-//press keyboard to create random white dots
 function keyPressed() {
-if(key === '1'){
-  mode = 1;  // add more fireworks
+
+
+if (key === '1'){
+  mode = 1;
 }
 
 if(key === '2'){
- fireworks = []; 
- mode = 2; // create fireworks by users‘ clicking
+  mode = 2;
 }
 
+//add more white dots
 if(key === ' '){
 
  for (let i = 0; i < whiteDots.length; i++) {
@@ -146,43 +113,21 @@ if(key === ' '){
   }
 }
 //save screenshot
+
 if(key === 's' || 'S'){
-  saveCanvas('Your creation done!', png);
+  saveCanvas('Your creation done!','png');
 }
-
-
 }
+function mouseClicked() {
 
-function mouseClicked(){
 
- if(mode === 1){
-
-  if (x.length === 0 && marcador === 0) {
-    x[0] = mouseX;
-    y[0] = mouseY;
-    vel[0] = 1.5;
-    r[0] = int(random(128) + 128);
-    g[0] = int(random(255));
-    b[0] = int(random(255));
-    marcador = 1;
-  } else {
-    x.push(mouseX);
-    y.push(mouseY);
-    vel.push(1.5);
-    r.push(int(random(128) + 128));
-    g.push(int(random(255)));
-    b.push(int(random(255)));
+  for (let i = fireworks.length - 1; i >= 0; i--) {
+    let distance = dist(mouseX, mouseY, fireworks[i].x, fireworks[i].y);
+    if (distance < 50) { 
+      fireworks.splice(i, 1);
+    }
   }
-  
-  
- }
-
-if(mode === 2){
-
-  fireworks.push(new Firework(mouseX, mouseY, 0.5, 1)); //fireworks mode
-
- 
- }}
+}
 
 function windowResized() {
   resizeCanvas(windowWidth, windowHeight);
@@ -231,6 +176,7 @@ class Firework {
     this.circleColor2 = color(random(colors3));
     this.circleColor3 = color(random(colors3));
     this.circleColor4 = color(random(colors3));
+
   }
 
   // draw fireworks
@@ -240,28 +186,29 @@ class Firework {
     fill(this.FireworkColor);
     noStroke();
 
-    // Set time
-    let time = millis() - this.cycleStartTime;
-    let t = (time % cycleDuration) / cycleDuration;
+  // Set time
+  let time = millis() - this.cycleStartTime;
+  let t = (time % cycleDuration) / cycleDuration;
 
-    let size = map(t, 0, 1, 0, min(windowWidth, windowHeight) / 6);
+  let size = map(t, 0, 1, 0, min(windowWidth, windowHeight) / 6);
 
-    // Update rotation speed
-    this.rotation += this.rotationSpeed;
-    rotate(this.rotation);
+  // Update rotation speed
+  this.rotation += this.rotationSpeed;
+  rotate(this.rotation);
 
-    for (let i = 0; i < 360; i += 10) {
-      let ex = size * sin(i);
-      let ey = size * cos(i);
-      ellipse(ex, ey, 10, 10);
-      circle(ex, ey, 10);
+  for (let i = 0; i < 360; i += 10) {
+    let ex = size * sin(i);
+    let ey = size * cos(i);
+    ellipse(ex, ey, 10, 10);
+    circle(ex, ey, 10);
 
-      push();
-      fill(this.circleColor1);
-      circle(ex, ey, 5)
-      pop();
-    }
-    fill(this.circleColor2)
+    push();
+    fill(this.circleColor1);
+    circle(ex, ey, 5)
+    pop();
+  }
+  
+  fill(this.circleColor2)
     circle(0, 0, 50)
 
     fill(this.circleColor3)
@@ -271,20 +218,22 @@ class Firework {
     circle(0, 0, 20)
 
     pop();
-  }
+
+}
 
   // Fireworks bloom repeatedly
-  update() {
+  update() 
+  {
     if (millis() - this.cycleStartTime >= cycleDuration) {
       this.cycleStartTime = millis();
     } 
   }
 
-  updatePosition(newX, newY) {
+  updatePosition(newX, newY) 
+  {
     this.x = newX;
     this.y = newY;
   }
-
 }
 
 class WhiteDot {
