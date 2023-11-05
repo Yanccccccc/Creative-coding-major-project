@@ -15,11 +15,22 @@ let firework14;
 let firework15;
 let firework16;
 let firework17;
+let MyFont;
 // Control the number of frames in the bloom cycle
 let cycleDuration = 2000;
 let whiteDots = [];
 let fireworks = [];
+//texts
+let FortuneTexts = ["Happiness", "Sucess", "Hope", "Inspiration", "Be Yourself", "Love", "Adventure", "Peace", "Joy", "Wellness", "Creative", "Widsom", "Courage","Strength","Fulfillment","Passion","Optimism","Rich"];
+//to determine if the firework is clicked
+let isFireworksClicked = false;
 
+
+function preload(){
+
+  MyFont = loadFont('assets/MyFont.ttf');
+
+}
 
 function setup() {
   createCanvas(windowWidth, windowHeight);
@@ -46,6 +57,7 @@ function setup() {
   firework17 = new Firework(0.95 * width, height, 0.5, 1);
 
 
+
   fireworks.push(firework1);
   fireworks.push(firework2);
   fireworks.push(firework3);
@@ -65,6 +77,10 @@ function setup() {
   fireworks.push(firework17);
 
 
+
+  
+
+
   // Create randomly distributed white dots
   for (let i = 0; i < 50; i++) {
     let x = random(width);
@@ -72,7 +88,10 @@ function setup() {
     let size = random(5, 15);
     whiteDots.push(new WhiteDot(x, y, size));
   }
- }
+
+  
+}
+
 
 
 function draw() 
@@ -91,17 +110,21 @@ function draw()
     fireworks[i].update();
   }
 
+  if (isFireworksClicked) {
+    push();
+    fill('#FBAB46');
+    textFont(MyFont);
+    textSize(30); 
+    textAlign(CENTER, CENTER);
+    text(random(FortuneTexts), mouseX, mouseY); // Display the text at mouse click position
+    isFireworksClicked = false; // Reset for next click
+    pop();
+  }
+
 }
 function keyPressed() {
 
 
-if (key === '1'){
-  mode = 1;
-}
-
-if(key === '2'){
-  mode = 2;
-}
 
 //add more white dots
 if(key === ' '){
@@ -118,12 +141,15 @@ if(key === 's' || 'S'){
   saveCanvas('Your creation done!','png');
 }
 }
+
+
 function mouseClicked() {
 
 
   for (let i = fireworks.length - 1; i >= 0; i--) {
     let distance = dist(mouseX, mouseY, fireworks[i].x, fireworks[i].y);
     if (distance < 50) { 
+      isFireworksClicked = true;
       fireworks.splice(i, 1);
     }
   }
