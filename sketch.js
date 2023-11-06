@@ -1,3 +1,5 @@
+//Click each firework to see fortune word
+//Press C Key to change the core color of firework
 let firework1;
 let firework2;
 let firework3;
@@ -20,16 +22,14 @@ let MyFont;
 let cycleDuration = 2000;
 let whiteDots = [];
 let fireworks = [];
-//texts
-let FortuneTexts = ["Happiness", "Sucess", "Hope", "Inspiration", "Be Yourself", "Love", "Adventure", "Peace", "Joy", "Wellness", "Creative", "Widsom", "Courage","Strength","Fulfillment","Passion","Optimism","Rich"];
+//Fortunetexts
+let FortuneTexts = ["Happiness", "Sucess", "Hope", "Inspiration", "Be Yourself", "Love", "Adventure", "Peace", "Joy", "Wellness", "Creative", "Widsom", "Courage","Strength","Fulfillment","Passion","Optimism","Rich","Educated","Fun"];
 //to determine if the firework is clicked
+
 let isFireworksClicked = false;
 
-
 function preload(){
-
   MyFont = loadFont('assets/MyFont.ttf');
-
 }
 
 function setup() {
@@ -56,8 +56,7 @@ function setup() {
   firework16 = new Firework(0.67 * width, 1.05 * height, 0.5, 1);
   firework17 = new Firework(0.95 * width, height, 0.5, 1);
 
-
-
+  
   fireworks.push(firework1);
   fireworks.push(firework2);
   fireworks.push(firework3);
@@ -76,11 +75,6 @@ function setup() {
   fireworks.push(firework16);
   fireworks.push(firework17);
 
-
-
-  
-
-
   // Create randomly distributed white dots
   for (let i = 0; i < 50; i++) {
     let x = random(width);
@@ -88,11 +82,7 @@ function setup() {
     let size = random(5, 15);
     whiteDots.push(new WhiteDot(x, y, size));
   }
-
-  
 }
-
-
 
 function draw() 
 {
@@ -114,16 +104,15 @@ function draw()
     push();
     fill('#FBAB46');
     textFont(MyFont);
-    textSize(30); 
+    textSize(35); 
     textAlign(CENTER, CENTER);
-    text(random(FortuneTexts), mouseX, mouseY); // Display the text at mouse click position
-    isFireworksClicked = false; // Reset for next click
+    text(random(FortuneTexts), mouseX, mouseY); // text will be displayed in the mouse position
+    isFireworksClicked = false; // Reset to false and ready for next click
     pop();
   }
 
 }
 function keyPressed() {
-
 
 
 //add more white dots
@@ -135,22 +124,23 @@ if(key === ' '){
     whiteDots[i].updatePosition(x, y);
   }
 }
-//save screenshot
 
-if(key === 's' || 'S'){
-  saveCanvas('Your creation done!','png');
+//press c/C key to change color
+if( key === 'c' || "C"){
+
+  for (let i = 0; i < fireworks.length; i++) {
+    fireworks[i].changeCircleColor();
 }
 }
-
+}
 
 function mouseClicked() {
-
-
   for (let i = fireworks.length - 1; i >= 0; i--) {
     let distance = dist(mouseX, mouseY, fireworks[i].x, fireworks[i].y);
     if (distance < 50) { 
       isFireworksClicked = true;
       fireworks.splice(i, 1);
+      //deminish one firework at the index i
     }
   }
 }
@@ -246,6 +236,15 @@ class Firework {
     pop();
 
 }
+
+changeCircleColor() {
+  let colors = "FF007F-FFB7C5-93DFB8-FFC512-ACE5EE-4CAF50-F8F8FF-FF6347".split("-").map(a => "#" + a);
+  this.circleColor2 = color(random(colors));
+  this.circleColor3 = color(random(colors));
+  this.circleColor4 = color(random(colors));
+}
+
+
 
   // Fireworks bloom repeatedly
   update() 
