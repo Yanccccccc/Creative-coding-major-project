@@ -126,7 +126,7 @@ if(key === ' '){
 }
 
 //press c/C key to change color
-if( key === 'c' || "C"){
+else if( key === 'c' || "C"){
 
   for (let i = 0; i < fireworks.length; i++) {
     fireworks[i].changeCircleColor();
